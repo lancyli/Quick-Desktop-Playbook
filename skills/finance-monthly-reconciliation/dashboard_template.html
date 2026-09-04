@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>月末财务对账仪表盘</title>
+<script src="/vendor/highcharts/highcharts.js"></script>
+<script src="/vendor/highcharts/modules/accessibility.js"></script>
+<style>
+:root { --primary: #0052CC; --orange: #FF9900; --green: #36B37E; --red: #DE350B; }
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  background: var(--color-bg, #f5f6f8);
+  color: var(--color-text, #1a1a1a);
+  font-family: var(--font-sans, -apple-system, 'PingFang SC', sans-serif);
+  padding: 24px;
+}
+h1 { font-size: 22px; margin-bottom: 4px; }
+.subtitle { color: var(--color-text-secondary, #666); font-size: 13px; margin-bottom: 20px; }
+.kpi-grid {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 12px; margin-bottom: 24px;
+}
+.kpi-card {
+  background: var(--color-bg-secondary, #fff);
+  border: 1px solid var(--color-border-light, #e0e0e0);
+  border-radius: var(--radius-md, 10px); padding: 16px; text-align: center;
+}
+.kpi-card .label { font-size: 12px; color: var(--color-text-secondary, #888); margin-bottom: 6px; }
+.kpi-card .value { font-size: 24px; font-weight: 700; font-family: var(--font-mono, monospace); }
+.kpi-card .value.green { color: var(--green); }
+.kpi-card .value.red { color: var(--red); }
+.kpi-card .value.blue { color: var(--primary); }
+.kpi-card .value.orange { color: var(--orange); }
+.chart-grid {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+  gap: 16px; margin-bottom: 24px;
+}
+.chart-card {
+  background: var(--color-bg-secondary, #fff);
+  border: 1px solid var(--color-border-light, #e0e0e0);
+  border-radius: var(--radius-md, 10px); padding: 16px; min-height: 320px;
+}
+.chart-card h3 { font-size: 14px; margin-bottom: 12px; }
+table { width: 100%; border-collapse: collapse; font-size: 12px; }
+th {
+  background: var(--color-bg-tertiary, #f0f0f0); padding: 8px 10px;
+  text-align: left; font-weight: 600;
+  border-bottom: 2px solid var(--color-border-light, #ddd);
+}
+td { padding: 6px 10px; border-bottom: 1px solid var(--color-border-light, #eee); }
+tr:hover td { background: var(--color-bg-hover, #f8f9fa); }
+</style>
+</head>
+<body>
+
+<h1>📊 月末财务对账仪表盘</h1>
+<div class="subtitle">数据来源：OneDrive(ERP数据) + Outlook(银行回单) | 自动对账引擎 v2.0</div>
+
+<div class="kpi-grid" id="kpi-area"></div>
+
+<div class="chart-grid">
+  <div class="chart-card"><h3>🔄 银企对账结果</h3><div id="chart-recon"></div></div>
+  <div class="chart-card"><h3>📈 资金余额走势</h3><div id="chart-daily"></div></div>
+  <div class="chart-card"><h3>📊 应收账龄分布</h3><div id="chart-ar"></div></div>
+  <div class="chart-card"><h3>📊 应付账龄分布</h3><div id="chart-ap"></div></div>
+  <div class="chart-card"><h3>🏢 部门费用分布</h3><div id="chart-dept"></div></div>
+  <div class="chart-card"><h3>🏭 供应商 Top 10</h3><div id="chart-vendor"></div></div>
+</div>
+
+<div class="chart-card" id="unmatched-section" style="margin-bottom:24px">
+  <h3>⚠️ 未匹配交易明细</h3>
+  <table id="unmatched-table">
+    <thead><tr><th>交易流水号</th><th>日期</th><th>摘要</th><th style="text-align:right">金额</th></tr></thead>
+    <tbody id="unmatched-body"></tbody>
+  </table>
+</div>
+
+<script>
+// ===== 数据注入点 — 由 reconciliation_engine.py 的 generate_dashboard_data() 填充 =====
+const DASHBOARD_DATA = {{DATA_JSON}};
+
+// KPI 卡片
+const kpi = DASHBOARD_DATA.kpi;
+const kpis = [
+  { label: '对账匹配率', value: kpi.match_rate + '%', cls: kpi.match_rate >= 80 ? 'green' : 'orange' },
+  { label: '未匹配交易', value: kpi.unmatched_count + ' 笔', cls: 'red' },
+  { label: '应收逾期(>30天)', value: '¥' + (kpi.ar_overdue / 10000).toFixed(0) + '万', cls: 'orange' },
+  { label: '应付逾期(>30天)', value: '¥' + (kpi.ap_overdue / 10000).toFixed(0) + '万', cls: 'orange' },
+  { label: '期末资金余额', value: '¥' + (kpi.cash_balance / 10000).toFixed(0) + '万', cls: 'blue' },
+];
+const kpiArea = document.getElementById('kpi-area');
+kpis.forEach(k => {
+  kpiArea.innerHTML += `<div class="kpi-card"><div class="label">${k.label}</div><div class="value ${k.cls}">${k.value}</div></div>`;
+});
+
+// Highcharts 全局
+const theme = {
+  colors: ['#0052CC', '#FF9900', '#36B37E', '#DE350B', '#6554C0', '#00B8D9', '#FF5630', '#8993A4'],
+  chart: { backgroundColor: 'transparent', style: { fontFamily: 'inherit' } },
+  title: { style: { fontSize: '0px' } },
+  credits: { enabled: false },
+};
+Highcharts.setOptions(theme);
+const fmtWan = function() { return (this.value / 10000).toFixed(0) + '万'; };
+
+// 对账饼图
+Highcharts.chart('chart-recon', {
+  chart: { type: 'pie', height: 260 },
+  plotOptions: { pie: { innerSize: '50%', dataLabels: { format: '{point.name}: {point.y}笔' } } },
+  series: [{ data: DASHBOARD_DATA.recon_pie }]
+});
+
+// 资金走势
+Highcharts.chart('chart-daily', {
+  chart: { height: 260 },
+  xAxis: { categories: DASHBOARD_DATA.daily.dates, labels: { step: 5, style: { fontSize: '10px' } } },
+  yAxis: [
+    { title: { text: '余额' }, labels: { formatter: fmtWan } },
+    { title: { text: '收支' }, opposite: true, labels: { formatter: fmtWan } }
+  ],
+  series: [
+    { name: '期末余额', data: DASHBOARD_DATA.daily.balance, type: 'area', opacity: 0.3, yAxis: 0 },
+    { name: '当日收入', data: DASHBOARD_DATA.daily.income, type: 'column', yAxis: 1 },
+    { name: '当日支出', data: DASHBOARD_DATA.daily.expense, type: 'column', yAxis: 1 }
+  ]
+});
+
+// 应收账龄
+Highcharts.chart('chart-ar', {
+  chart: { type: 'column', height: 260 },
+  xAxis: { categories: DASHBOARD_DATA.ar_aging.map(d => d.name) },
+  yAxis: { title: { text: '金额' }, labels: { formatter: fmtWan } },
+  series: [{ name: '未收金额', data: DASHBOARD_DATA.ar_aging.map(d => d.y), color: '#FF9900' }]
+});
+
+// 应付账龄
+Highcharts.chart('chart-ap', {
+  chart: { type: 'column', height: 260 },
+  xAxis: { categories: DASHBOARD_DATA.ap_aging.map(d => d.name) },
+  yAxis: { title: { text: '金额' }, labels: { formatter: fmtWan } },
+  series: [{ name: '未付金额', data: DASHBOARD_DATA.ap_aging.map(d => d.y), color: '#DE350B' }]
+});
+
+// 部门费用
+Highcharts.chart('chart-dept', {
+  chart: { type: 'pie', height: 260 },
+  plotOptions: { pie: { dataLabels: { format: '{point.name}<br>¥{point.y:,.0f}' } } },
+  series: [{ data: DASHBOARD_DATA.dept_expense }]
+});
+
+// 供应商 Top10
+Highcharts.chart('chart-vendor', {
+  chart: { type: 'bar', height: 260 },
+  xAxis: { categories: DASHBOARD_DATA.vendor_top10.map(d => d.name), labels: { style: { fontSize: '11px' } } },
+  yAxis: { title: { text: '金额' }, labels: { formatter: fmtWan } },
+  series: [{ name: '交易总额', data: DASHBOARD_DATA.vendor_top10.map(d => d.y), color: '#0052CC' }],
+  legend: { enabled: false }
+});
+
+// 未匹配明细表
+const tbody = document.getElementById('unmatched-body');
+(DASHBOARD_DATA.unmatched_items || []).forEach(item => {
+  const key_amount = item['金额'] || item['支出'] || item['收入'] || 0;
+  tbody.innerHTML += `<tr>
+    <td>${item['交易流水号'] || ''}</td>
+    <td>${item['交易日期'] || ''}</td>
+    <td>${item['交易摘要'] || ''}</td>
+    <td style="text-align:right">¥${Number(key_amount).toLocaleString('zh-CN', {minimumFractionDigits:2})}</td>
+  </tr>`;
+});
+</script>
+</body>
+</html>

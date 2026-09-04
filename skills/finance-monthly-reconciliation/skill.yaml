@@ -1,0 +1,146 @@
+---
+name: finance_monthly_reconciliation
+display_name: 月末财务对账
+icon: "💰"
+description: >-
+  自动完成月末财务对账全流程：从 OneDrive 拉取 ERP 数据，从 Outlook 邮箱
+  提取银行电子回单 PDF，执行三维度自动对账（参考号+金额+摘要匹配），
+  生成交互式仪表盘和对账结果 Excel，通过 Outlook/Teams/Slack 推送报告。
+version: "2.0.0"
+author: "Amazon Quick Finance Team"
+tags:
+  - 财务
+  - 对账
+  - 月末结账
+  - 银行回单
+  - ERP
+
+connectors_required:
+  - name: Amazon OneDrive
+    purpose: 拉取 ERP 数据包 / 回写对账结果归档
+  - name: Amazon Outlook
+    purpose: 搜索并提取银行回单邮件附件(PDF) / 发送对账报告邮件
+  - name: Amazon Teams
+    purpose: 发送对账完成通知
+  - name: Slack
+    purpose: 发送对账完成通知
+
+config:
+  onedrive_folder: "财务月末数据_{YYYYMM}"
+  erp_filename: "财务月末数据包_{YYYYMM}.xlsx"
+  email_search_keyword: "电子回单通知"
+  email_search_days: 31
+  reconciliation_tolerance: 0.01
+  similarity_threshold: 0.6
+  report_recipients:
+    - "cfo@company.com"
+  teams_notify: true
+  slack_notify: true
+  slack_channel: "#finance"
+
+workflow_steps:
+  - step: 1
+    title: 数据采集 — 从 OneDrive 拉取 ERP 数据
+    mode: agentic
+    input: OneDrive 文件夹路径 + ERP 数据包文件名
+    output: "dict: {erp_df, bank_df, ar_df, ap_df, daily_df}"
+    tools:
+      - amazon_onedrive__GetSignedInUser
+      - amazon_onedrive__GetDrive
+      - amazon_onedrive__ListChildren
+      - amazon_onedrive__GetItem
+    validate: 5 个 DataFrame 均非空，ERP 记录数 > 0
+    on_failure: 提示用户检查 OneDrive 路径和文件名是否正确
+
+  - step: 2
+    title: 邮件回单提取 — 从 Outlook 抓取银行电子回单
+    mode: agentic
+    input: 邮件搜索关键词 + 时间范围
+    output: "银行回单交易明细 DataFrame（日期、收款方、金额、摘要）"
+    tools:
+      - email_search
+      - email_read
+      - email_attachments
+      - file_read_pdf
+    validate: 提取到至少 1 条回单记录
+    on_failure: 若无回单邮件，跳过回单验证步骤，仅用 ERP 和银行流水对账
+
+  - step: 3
+    title: 数据清洗 + 自动对账
+    mode: deterministic
+    input: "ERP DataFrame + 银行流水 DataFrame + 回单 DataFrame"
+    output: "dict: {matched_df, erp_only_df, bank_only_df, stats}"
+    tools:
+      - run_python
+    logic: |
+      三维度匹配（按优先级顺序）：
+      1. 参考号精确匹配（PZ-xxxx ↔ BK-xxxx）
+      2. 日期+金额模糊匹配（容差 ±1%）
+      3. 摘要相似度匹配（difflib SequenceMatcher，阈值 0.6）
+    validate: 匹配率 > 50%，否则告警
+    on_failure: 输出匹配率过低告警，建议人工检查数据源
+
+  - step: 4
+    title: 智能分析 + 可视化
+    mode: deterministic
+    input: 对账结果 + 应收应付 + 资金日报
+    output: HTML 交互式仪表盘
+    tools:
+      - run_python
+      - open_in_session_tab
+    charts:
+      - 对账结果饼图（匹配/仅ERP/仅银行）
+      - 应收账龄分布柱状图
+      - 应付账龄分布柱状图
+      - 资金余额走势折线图（含收入/支出双轴）
+      - 部门费用分布环形图
+      - 供应商 Top10 柱状图
+    validate: HTML 文件生成成功且包含 6 个图表
+    on_failure: 降级为纯文本报告
+
+  - step: 5
+    title: 报告生成
+    mode: deterministic
+    input: 对账结果 + 分析数据
+    output: "对账结果 Excel（4 sheet）+ 邮件正文 HTML + 通知文本"
+    tools:
+      - run_python
+    sheets:
+      - 匹配成功明细
+      - 仅ERP明细
+      - 仅银行明细
+      - 汇总统计
+    validate: Excel 文件生成成功，文件大小 > 0
+    on_failure: 重试一次，仍失败则输出 CSV 替代
+
+  - step: 6
+    title: 归档 + 推送
+    mode: agentic
+    input: 对账结果文件 + 邮件正文 + 通知文本
+    output: 归档确认 + 推送确认
+    tools:
+      - amazon_onedrive__UploadFile
+      - email_send
+      - send_self_message
+      - send_chat_message
+      - conversations_add_message
+    actions:
+      - "OneDrive: 上传对账结果 Excel 到原数据文件夹"
+      - "Outlook: 发送对账报告邮件给管理层"
+      - "Teams: 发送完成通知"
+      - "Slack: 发送完成通知到财务频道"
+    validate: 至少邮件发送成功
+    on_failure: 记录失败渠道，不阻塞其他渠道推送
+
+  - step: 7
+    title: 定时自动化
+    mode: agentic
+    input: 无（Schedule 触发）
+    output: 自动执行 Step 1-6
+    schedule:
+      description: 每月最后一个工作日 09:00 自动执行
+      cron_suggestion: "0 9 L * ? *"
+      agent_name: 月末财务对账助手
+      prompt: "请执行本月的财务月末对账流程"
+    validate: 全流程无阻塞性错误
+    on_failure: 发送失败通知给管理员，附带错误日志

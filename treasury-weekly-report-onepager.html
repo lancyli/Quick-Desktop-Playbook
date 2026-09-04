@@ -1,0 +1,975 @@
+<!DOCTYPE html>
+<html lang="zh-CN"><head><title>Amazon Quick Desktop 资金周报生成助手 · 单页讲解版</title><meta name="viewport" content="width=device-width, initial-scale=1.0"><style id="qw-theme">:root {
+  --color-bg: #faf9fc;
+  --color-text: #131920;
+  --color-navbar-bg: #f9f9fb;
+  --color-bg-chat-view: #fcfcfd;
+  --color-bg-secondary: #fff;
+  --color-bg-tertiary: #f9fafb;
+  --color-bg-hover: #f3f4f6;
+  --color-surface: #f9fafb;
+  --color-surface-hover: #f3f4f6;
+  --color-surface-active: #e5e7eb;
+  --color-border: #0000001f;
+  --color-border-light: #0000000f;
+  --color-border-strong: #d1d5db;
+  --color-primary: #4200db;
+  --color-primary-dark: #35009e;
+  --color-primary-light: #8575ff;
+  --color-primary-bg: #e8e6ff;
+  --color-primary-hover-border: #35009e;
+  --color-nav-icon-active: #4200db;
+  --color-nav-hover-border: #4200db;
+  --color-primary-alpha-3: color-mix(in srgb, #4200db 3%, transparent);
+  --color-primary-alpha-5: color-mix(in srgb, #4200db 5%, transparent);
+  --color-primary-alpha-8: color-mix(in srgb, #4200db 8%, transparent);
+  --color-primary-alpha-12: color-mix(in srgb, #4200db 12%, transparent);
+  --color-primary-alpha-15: color-mix(in srgb, #4200db 15%, transparent);
+  --color-primary-alpha-20: color-mix(in srgb, #4200db 20%, transparent);
+  --color-primary-alpha-25: color-mix(in srgb, #4200db 25%, transparent);
+  --color-primary-alpha-30: color-mix(in srgb, #4200db 30%, transparent);
+  --color-primary-alpha-40: color-mix(in srgb, #4200db 40%, transparent);
+  --color-primary-alpha-50: color-mix(in srgb, #4200db 50%, transparent);
+  --color-primary-alpha-60: color-mix(in srgb, #4200db 60%, transparent);
+  --color-primary-subtle: color-mix(in srgb, #4200db 12%, transparent);
+  --color-primary-border: color-mix(in srgb, #4200db 30%, transparent);
+  --color-focus-ring: color-mix(in srgb, #4200db 50%, transparent);
+  --color-sidebar-hover: color-mix(in srgb, #4200db 12%, transparent);
+  --block-hover-outline: 1px dashed color-mix(in srgb, #4200db 50%, transparent);
+  --block-selected-outline: 1px solid #8575ff;
+  --block-selection-outline-offset: 2px;
+  --block-selected-halo: 0 0 8px color-mix(in srgb, #4200db 40%, transparent);
+  --color-accent: #4200db;
+  --color-accent-foreground: #4200db;
+  --color-accent-dark: #35009e;
+  --color-accent-light: #e8e6ff;
+  --color-accent-inverse: #fff;
+  --color-link: #4200db;
+  --color-primary-gradient-end: #e8e6ff;
+  --color-primary-bg-solid: #e8e6ff;
+  --color-user-bubble: #f3f3f7;
+  --color-user-bubble-text: #131920;
+  --color-text-secondary: #5e5e5e;
+  --color-text-tertiary: #656871;
+  --color-text-muted: #9ca3af;
+  --color-text-on-primary: #fff;
+  --color-success: #00802f;
+  --color-success-dark: #00471e;
+  --color-success-light: #d9ffd6;
+  --color-success-hover: #005c26;
+  --color-success-bg: #e6f5eb;
+  --color-success-border: #b3d9bf;
+  --color-success-foreground: #00802f;
+  --color-success-dark-foreground: #00471e;
+  --color-success-text: #00471e;
+  --color-error: #db0000;
+  --color-error-dark: #700000;
+  --color-error-light: #ffe0e0;
+  --color-error-hover: #ffe0e0;
+  --color-error-bg: #fceaea;
+  --color-error-border: #f2cccc;
+  --color-error-active-border: #db0000;
+  --color-error-foreground: #db0000;
+  --color-error-dark-foreground: #700000;
+  --color-error-inverse: #fff;
+  --color-error-text: #700000;
+  --color-warning: #f2b100;
+  --color-warning-dark: #573a00;
+  --color-warning-light: #fffbbd;
+  --color-warning-hover: #db9200;
+  --color-warning-bg: #fef7e6;
+  --color-warning-border: #f9dfa3;
+  --color-warning-foreground: #f2b100;
+  --color-warning-dark-foreground: #573a00;
+  --color-warning-inverse: #573a00;
+  --color-surface-warning: #fffbbd;
+  --color-text-warning: #573a00;
+  --color-info: #006ce0;
+  --color-info-dark: #002a66;
+  --color-info-light: #d1f1ff;
+  --color-info-hover: #003b8f;
+  --color-info-bg: #ebf3fc;
+  --color-info-border: #b3d1f0;
+  --color-info-foreground: #006ce0;
+  --color-info-dark-foreground: #002a66;
+  --color-info-inverse: #fff;
+  --color-overlay: #00000080;
+  --color-shadow: #00000014;
+  --color-hover: #0000000d;
+  --color-tooltip-bg: #000000d9;
+  --color-tooltip-text: #fff;
+  --color-voice-purple: #8575ff;
+  --color-voice-purple-dark: #4200db;
+  --color-voice-purple-light: #8575ff;
+  --color-voice-red: #db0000;
+  --color-voice-red-dark: #700000;
+  --color-voice-amber: #f2b100;
+  --color-voice-purple-glow: #4200db66;
+  --color-voice-red-glow: #db000066;
+  --font-sans: "Amazon Ember", "Helvetica Neue", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --font-mono: "SF Mono", "Monaco", "Menlo", "Consolas", monospace;
+  --text-2xs: .5625rem;
+  --text-xs: .625rem;
+  --text-sm: .6875rem;
+  --text-base: .75rem;
+  --text-md: .8125rem;
+  --text-lg: .875rem;
+  --text-xl: 1rem;
+  --text-2xl: 1.125rem;
+  --text-3xl: 1.25rem;
+  --text-4xl: 1.5rem;
+  --text-5xl: 2rem;
+  --spacing-1: calc(.25rem * 1);
+  --spacing-1-5: calc(.25rem * 1.5);
+  --spacing-2: calc(.25rem * 2);
+  --spacing-3: calc(.25rem * 3);
+  --spacing-4: calc(.25rem * 4);
+  --spacing-5: calc(.25rem * 5);
+  --spacing-6: calc(.25rem * 6);
+  --spacing-7: calc(.25rem * 7);
+  --spacing-8: calc(.25rem * 8);
+  --spacing-9: calc(.25rem * 9);
+  --spacing-10: calc(.25rem * 10);
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-card: 12px;
+  --radius-lg: 16px;
+  --radius-pill: 8px;
+  --shadow-sm: 0 1px 2px #0000000d;
+  --shadow-md: 0 4px 12px #00000014;
+  --color-success-bg-solid: #d9ffd6;
+  --color-error-bg-solid: #ffe0e0;
+  --color-error-border-solid: #ffe0e0;
+  --color-warning-bg-solid: #fffbbd;
+  --color-warning-text: #573a00;
+  --color-info-bg-solid: #d1f1ff;
+  --color-info-bg-solid-alt: #d1f1ff;
+  --color-info-text: #002a66;
+  --color-info-text-alt: #002a66;
+  --color-emerald: #10b981;
+  --color-teal: #4ecdc4;
+  --color-code-bg: #f3f3f7;
+  --color-code-header-bg: #f1f3f5;
+  --color-code-text: #24292e;
+  --color-code-border: #e1e4e8;
+  --color-code-muted: #6a737d;
+  --color-inline-code-bg: #f3f3f7;
+  --color-inline-code-text: #24292e;
+  --color-inline-code-border: #e1e4e8;
+  --color-scrollbar-thumb: #d1d5db;
+  --color-scrollbar-track: transparent;
+  --color-graph-node-text: #333;
+  --color-graph-node-text-dim: #7f8c8d;
+  --color-graph-edge-default: #95a5a6;
+  --color-graph-edge-cross: #e67e22;
+  --color-graph-edge-text: #666;
+  --color-graph-edge-stroke: #fff;
+  --color-graph-highlight-bg: #ff6b6b;
+  --color-graph-highlight-border: #e74c3c;
+  --color-graph-search-bg: gold;
+  --color-graph-search-border: orange;
+  --color-graph-focus-border: #c0392b;
+  --color-graph-external-border: #95a5a6;
+  --color-graph-cat-file: #3498db;
+  --color-graph-cat-folder: #7f8c8d;
+  --color-graph-cat-file-aggregate: #2980b9;
+  --color-graph-cat-class: #9b59b6;
+  --color-graph-cat-function: #2ecc71;
+  --color-graph-cat-method: #1abc9c;
+  --color-graph-cat-variable: #f39c12;
+  --color-graph-cat-import: #d35400;
+  --color-graph-cat-module: #5b6abf;
+  --color-graph-cat-concept: #e74c3c;
+  --color-graph-cat-person: #ff6b6b;
+  --color-graph-cat-org: #4ecdc4;
+  --color-graph-cat-organization: #4ecdc4;
+  --color-graph-cat-product: #a29bfe;
+  --color-graph-cat-metric: #fd79a8;
+  --color-graph-cat-location: #34495e;
+  --color-graph-cat-date: #e056a0;
+  --color-graph-cat-code: #3498db;
+  --color-graph-cat-doc: #7f8c8d;
+  --color-graph-cat-url: #00b894;
+  --color-graph-cat-email: #6c5ce7;
+  --color-graph-cat-unknown: #bdc3c7;
+  --color-graph-rel-contains: #bdc3c7;
+  --color-graph-rel-extends: #9b59b6;
+  --color-graph-rel-implements: #3498db;
+  --color-graph-rel-imports: #e67e22;
+  --color-graph-rel-uses: #2ecc71;
+  --color-graph-rel-calls: #27ae60;
+  --color-graph-rel-references: #f39c12;
+  --color-graph-rel-related-to: #95a5a6;
+  --color-graph-rel-works-on: #e74c3c;
+  --color-graph-rel-owns: #1abc9c;
+  --color-graph-rel-depends-on: #e67e22;
+  --color-graph-rel-parent-of: #bdc3c7;
+  --qs-content: #fff;
+  --qs-main: #fff;
+  --qs-primary-foreground: #131920;
+  --qs-secondary-foreground: #656871;
+  --qs-tertiary-foreground: #9ca3af;
+  --qs-placeholder-foreground: #8c8c94;
+  --qs-divider: #dedee3;
+  --qs-default-border: #8c8c94;
+  --qs-neutral-soft: #b4b4bb;
+  --qs-neutral-gray-50: #f9fafb;
+  --qs-tertiary-background: #f9fafb;
+  --qs-action-hover: #f3f3f7;
+  --qs-primary-default: #4200db;
+  --qs-primary-dark: #35009e;
+  --qs-primary-light: #e8e6ff;
+  --qs-success-default: #00802f;
+  --qs-error-default: #db0000;
+  --qs-font-sans: "Amazon Ember", "Helvetica Neue", "Segoe UI", Helvetica, Arial, sans-serif;
+  --safe-top: 0px;
+  --safe-bottom: 0px;
+  --safe-left: 0px;
+  --safe-right: 0px;
+  --qs-font-family: "Amazon Ember", "Helvetica Neue", "Segoe UI", Helvetica, Arial, sans-serif;
+  --qs-font-base-letter-spacing: .15px;
+  --qs-shadow-sm: 0 0 2px 0 #00000029, 0 0 4px 0 #00000029;
+  --qs-shadow-md: 0 0 2px 0 #00000029, 0 2px 8px 1px #00000029;
+  --qs-shadow-lg: 0 4px 16px 4px #00000029, 0 2px 6px 1px #00000029;
+  --qs-shadow-xl: 0 4px 8px 2px #00000029, 0 6px 20px 4px #00000029;
+  --qs-width-modal-sm: 384px;
+  --qs-width-modal-md: 600px;
+  --qs-width-modal-lg: 1136px;
+  --qs-grid-gap: 16px;
+  --qs-grid-gap-xl: 24px;
+  --qs-primary-medium: #8575ff;
+  --qs-primary-inverse: #fff;
+  --qs-neutral-lightest: #f9f9fb;
+  --qs-neutral-light: #f3f3f7;
+  --qs-neutral-default: #dedee3;
+  --qs-neutral-medium: #8c8c94;
+  --qs-neutral-deep: #656871;
+  --qs-neutral-dark: #333843;
+  --qs-neutral-strong: #131920;
+  --qs-neutral-white: #fff;
+  --qs-neutral-black: #000;
+  --qs-success-medium: #005c26;
+  --qs-success-dark: #00471e;
+  --qs-success-light: #d9ffd6;
+  --qs-success-inverse: #fff;
+  --qs-info-default: #006ce0;
+  --qs-info-medium: #003b8f;
+  --qs-info-dark: #002a66;
+  --qs-info-light: #d1f1ff;
+  --qs-info-inverse: #fff;
+  --qs-warning-default: #f2b100;
+  --qs-warning-medium: #db9200;
+  --qs-warning-dark: #573a00;
+  --qs-warning-light: #fffbbd;
+  --qs-warning-inverse: #573a00;
+  --qs-warning-experimental: #f2b100;
+  --qs-warning-experimental-light: #fffbbd;
+  --qs-warning-experimental-light-foreground: #fffbbd;
+  --qs-error-medium: #900;
+  --qs-error-dark: #700000;
+  --qs-error-light: #ffe0e0;
+  --qs-error-inverse: #fff;
+  --qs-connection-default: #db3300;
+  --qs-connection-soft: #ff997a;
+  --qs-connection-light: #ffe0d6;
+  --qs-connection-dark: #661800;
+  --qs-automation-default: #b3008f;
+  --qs-automation-medium: #d600ba;
+  --qs-automation-soft: #ff94f1;
+  --qs-automation-light: #ffe0fb;
+  --qs-automation-dark: #660052;
+  --qs-insight-default: #a000b8;
+  --qs-insight-soft: #f299ff;
+  --qs-insight-light: #fce6ff;
+  --qs-insight-dark: #590066;
+  --qs-visualization-default: #7300e5;
+  --qs-visualization-soft: #d4a8ff;
+  --qs-visualization-light: #f2e5ff;
+  --qs-visualization-dark: #45008a;
+  --qs-spice: #ff9800;
+  --qs-coachmark: #006ce0;
+  --qs-brand: #fff;
+  --qs-brand-foreground: #131920;
+  --qs-brand-navbar: #131920;
+  --qs-brand-navbar-foreground: #fff;
+  --qs-brand-navbar-light: #dedee3;
+  --qs-brand-navbar-dark: #000;
+  --qs-application-navbar: #4200db;
+  --qs-application-navbar-foreground: #fff;
+  --qs-application-navbar-light: #e8e6ff;
+  --qs-application-navbar-dark: #35009e;
+  --qs-dimension: #4200db;
+  --qs-dimension-foreground: #fff;
+  --qs-dimension-experimental: #4200db;
+  --qs-dimension-experimental-foreground: #4200db;
+  --qs-measure: #00802f;
+  --qs-measure-foreground: #fff;
+  --qs-measure-experimental: #f2b100;
+  --qs-measure-experimental-foreground: #f2b100;
+  --qs-content-inverse: #333843;
+  --qs-content-inverse-active: #131920;
+  --qs-secondary: #dedee3;
+  --qs-disabled: #8c8c94;
+  --qs-divider-light: #f3f3f7;
+  --qs-hover-border: #333843;
+  --qs-active-border: #4200db;
+  --qs-disabled-border: #dedee3;
+  --qs-error-border: #ffe0e0;
+  --qs-error-active-border: #db0000;
+  --qs-disabled-foreground: #b4b4bb;
+  --qs-primary-inverse-foreground: #fff;
+  --qs-error-foreground: #db0000;
+  --qs-contrast-foreground: #131920;
+  --qs-main-foreground: #131920;
+  --qs-main-secondary-foreground: #656871;
+  --qs-action-disabled: #f3f3f7;
+  --qs-action-active: #e8e6ff;
+  --qs-default-badge: #dedee3;
+  --qs-tag-default: #dedee3;
+  --qs-tag-soft-border: #b4b4bb;
+  --qs-focus-offset: 1px;
+  --qs-toggle-tile-sm: calc(.25rem * 8);
+  --qs-toggle-tile-md: calc(.25rem * 12);
+  --qs-toggle-tile-lg: calc(.25rem * 15);
+  --qs-shadow-pin-right: inset 4px 0 4px -4px #00000029;
+  --qs-shadow-pin-left: inset -4px 0 4px -4px #00000029;
+  --react-pdf-text-layer: 1;
+  --highlight-bg-color: #b400aa;
+  --highlight-selected-bg-color: #006400;
+  --react-pdf-annotation-layer: 1;
+  --annotation-unfocused-field-background: url("data:image/svg+xml;charset=UTF-8,<svg width='1px' height='1px' xmlns='http://www.w3.org/2000/svg'><rect width='100%' height='100%' style='fill:rgba(0, 54, 255, 0.13);'/></svg>");
+  --input-focus-border-color: Highlight;
+  --input-focus-outline: 1px solid Canvas;
+  --input-unfocused-border-color: transparent;
+  --input-disabled-border-color: transparent;
+  --input-hover-border-color: black;
+  --link-outline: none;
+  color-scheme: light;
+}
+body { background: var(--color-bg); color: var(--color-text); }
+a { color: var(--color-link, var(--color-primary)); }</style>
+<meta charset="UTF-8">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:#0a0e1a;font-family:'PingFang SC',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;color:#e2e8f0;overflow:hidden;height:100vh;display:flex;flex-direction:column}
+
+/* Slide container */
+.slide-wrap{flex:1;overflow:hidden;position:relative}
+.slide{position:absolute;inset:0;padding:24px 44px 60px;display:none;flex-direction:column;justify-content:center;opacity:0;transform:translateY(8px);transition:opacity .5s ease,transform .5s ease}
+.slide.active{display:flex;opacity:1;transform:translateY(0)}
+
+/* Slide indicator */
+.slide-indicator{position:absolute;top:12px;right:44px;font-size:11px;color:#4a5568;font-family:monospace;letter-spacing:1px}
+
+/* Title styles */
+.s-brand{font-size:10px;color:#63b3ed;letter-spacing:3px;text-transform:uppercase;font-weight:700;margin-bottom:4px;text-shadow:0 0 12px rgba(99,179,237,.3)}
+.s-title{font-size:28px;font-weight:800;color:#fff;margin-bottom:4px;line-height:1.2}
+.s-title .accent{color:#63b3ed;text-shadow:0 0 20px rgba(99,179,237,.4)}
+.s-subtitle{font-size:14px;color:#a0aec0;margin-bottom:14px;line-height:1.5}
+
+/* Content cards */
+.s-grid{display:grid;gap:8px}
+.s-grid.g2{grid-template-columns:1fr 1fr}
+.s-grid.g3{grid-template-columns:1fr 1fr 1fr}
+.s-grid.g4{grid-template-columns:1fr 1fr 1fr 1fr}
+.s-grid.g5{grid-template-columns:1fr 1fr 1fr 1fr 1fr}
+.s-card{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);border-radius:10px;padding:12px;transition:all .2s}
+.s-card:hover{border-color:rgba(99,179,237,.3);background:rgba(255,255,255,.06)}
+.s-card .icon{font-size:20px;margin-bottom:6px;display:block}
+.s-card .name{font-size:14px;font-weight:700;color:#e2e8f0;margin-bottom:4px}
+.s-card .desc{font-size:13px;color:#a0aec0;line-height:1.5}
+.s-card.highlight{border-color:rgba(99,179,237,.3);box-shadow:0 0 20px rgba(99,179,237,.08)}
+
+/* Before/After */
+.ba-row{display:grid;grid-template-columns:1fr auto 1fr;gap:16px;align-items:center}
+.ba-card{border-radius:10px;padding:12px 14px;font-size:12.5px;line-height:1.55}
+.ba-before{background:rgba(245,101,101,.06);border:1px solid rgba(245,101,101,.2)}
+.ba-after{background:rgba(72,187,120,.06);border:1px solid rgba(72,187,120,.2)}
+.ba-title{font-size:13px;font-weight:700;margin-bottom:4px}
+.ba-item{padding:2px 0;color:#a0aec0}
+.ba-arrow{font-size:36px;color:#63b3ed;text-shadow:0 0 15px rgba(99,179,237,.5)}
+
+/* Architecture */
+.arch-layer{border-radius:8px;padding:11px;margin-bottom:6px;position:relative}
+.arch-layer-label{position:absolute;top:-1px;left:12px;font-size:10px;font-weight:700;letter-spacing:.4px;text-transform:uppercase;padding:2px 10px;border-radius:0 0 4px 4px}
+.lt{background:rgba(139,92,246,.08);border:1px solid rgba(139,92,246,.25)}.lt .arch-layer-label{background:linear-gradient(90deg,#7c3aed,#8b5cf6);color:#fff}
+.ld{background:rgba(66,153,225,.06);border:1px solid rgba(66,153,225,.2)}.ld .arch-layer-label{background:linear-gradient(90deg,#2b6cb0,#3182ce);color:#fff}
+.lc{background:rgba(237,137,54,.06);border:1px solid rgba(237,137,54,.2)}.lc .arch-layer-label{background:linear-gradient(90deg,#c05621,#dd6b20);color:#fff}
+.lr{background:rgba(72,187,120,.06);border:1px solid rgba(72,187,120,.2)}.lr .arch-layer-label{background:linear-gradient(90deg,#276749,#38a169);color:#fff}
+.lo{background:rgba(245,101,101,.06);border:1px solid rgba(245,101,101,.2)}.lo .arch-layer-label{background:linear-gradient(90deg,#c53030,#e53e3e);color:#fff}
+.arch-boxes{display:grid;gap:5px;padding-top:16px}
+.arch-boxes.g3{grid-template-columns:1fr 1fr 1fr}
+.arch-boxes.g5{grid-template-columns:1fr 1fr 1fr 1fr 1fr}
+.ab{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:6px;padding:6px;text-align:center;font-size:11px}
+.ab .abi{font-size:15px;display:block;margin-bottom:1px}
+.ab .abn{font-weight:600;font-size:11px}
+.arch-arrow{text-align:center;font-size:12px;color:#4a5568;margin:2px 0}
+
+/* Table */
+.s-table{width:100%;border-collapse:collapse;font-size:13px}
+.s-table th{background:rgba(45,55,72,.6);border:1px solid rgba(255,255,255,.1);padding:11px 16px;text-align:left;font-weight:700;color:#fff;font-size:14px}
+.s-table td{border:1px solid rgba(255,255,255,.06);padding:10px 16px;color:#cbd5e0;font-size:14px}
+.s-table tr:nth-child(even) td{background:rgba(255,255,255,.02)}
+
+/* Badge */
+.aib{display:inline-flex;align-items:center;gap:3px;font-size:10px;padding:2px 8px;border-radius:4px;background:rgba(66,153,225,.15);color:#63b3ed;border:1px solid rgba(66,153,225,.25);font-weight:600}
+.hb{display:inline-flex;align-items:center;gap:3px;font-size:10px;padding:2px 8px;border-radius:4px;background:rgba(139,92,246,.12);color:#b794f4;border:1px solid rgba(139,92,246,.25);font-weight:600}
+
+/* Pipeline steps */
+.pipe-step{display:flex;gap:8px;align-items:flex-start;margin-bottom:5px}
+.pipe-num{min-width:24px;height:24px;border-radius:50%;background:linear-gradient(135deg,#2b6cb0,#4c51bf);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#fff;flex-shrink:0;box-shadow:0 2px 8px rgba(66,153,225,.3)}
+.pipe-body{flex:1}
+.pipe-name{font-size:14px;font-weight:700;color:#e2e8f0;margin-bottom:2px}
+.pipe-desc{font-size:13px;color:#cbd5e0;line-height:1.5}
+
+/* Dims */
+.dim{display:flex;align-items:center;gap:5px;padding:5px 8px;background:rgba(255,255,255,.03);border-radius:5px;border:1px solid rgba(255,255,255,.08)}
+.dim .di{font-size:14px;flex-shrink:0}
+.dim .dn{font-size:13px;font-weight:600;color:#e2e8f0}
+.dim .dd{font-size:11px;color:#a0aec0}
+.dim.c{border-left:3px solid #4299e1}
+.dim.r{border-left:3px solid #f56565}
+.dim.e{border-left:3px solid #805ad5}
+
+/* Connectors */
+.conn{padding:6px 12px;border-radius:6px;font-size:13px;font-weight:500;display:inline-flex;align-items:center;gap:4px}
+.conn.ready{background:rgba(72,187,120,.08);border:1px solid rgba(72,187,120,.25);color:#48bb78}
+.conn.mcp{background:rgba(237,137,54,.06);border:1px dashed rgba(237,137,54,.25);color:#ed8936}
+
+/* Stat row */
+.stat-row{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:14px}
+.stat-box{text-align:center;background:rgba(255,255,255,.05);padding:8px 16px;border-radius:8px;border:1px solid rgba(99,179,237,.15);min-width:65px}
+.stat-box .sv2{font-size:20px;font-weight:800;color:#63b3ed;font-family:monospace;text-shadow:0 0 10px rgba(99,179,237,.3)}
+.stat-box .sl2{font-size:10px;color:#a0aec0;margin-top:2px}
+
+/* Phase card for implementation */
+.phase-card{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);border-radius:10px;padding:14px;position:relative;overflow:hidden}
+.phase-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px}
+.phase-card.p1::before{background:linear-gradient(90deg,#4299e1,#63b3ed)}
+.phase-card.p2::before{background:linear-gradient(90deg,#48bb78,#68d391)}
+.phase-card.p3::before{background:linear-gradient(90deg,#ed8936,#f6ad55)}
+.phase-card .ph-title{font-size:15px;font-weight:700;color:#e2e8f0;margin-bottom:4px}
+.phase-card .ph-time{font-size:12px;font-weight:600;margin-bottom:8px}
+.phase-card .ph-list{font-size:12px;color:#a0aec0;line-height:1.7;padding-left:16px}
+
+/* Value metric */
+.val-card{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);border-radius:10px;padding:16px;text-align:center}
+.val-card .val-num{font-size:28px;font-weight:800;font-family:monospace;margin-bottom:4px}
+.val-card .val-label{font-size:13px;color:#a0aec0;margin-bottom:6px}
+.val-card .val-detail{font-size:13px;color:#a0aec0;line-height:1.5}
+
+/* Demo output list */
+.demo-item{display:flex;gap:8px;padding:8px 12px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.08);border-radius:8px;margin-bottom:5px;align-items:flex-start}
+.demo-item .demo-icon{font-size:22px;flex-shrink:0}
+.demo-item .demo-title{font-size:14px;font-weight:700;color:#e2e8f0}
+.demo-item .demo-desc{font-size:13px;color:#cbd5e0;line-height:1.55}
+
+
+/* Tool tags */
+.ttag{display:inline-block;font-size:10px;padding:1px 6px;border-radius:3px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);color:#718096;margin-right:3px;margin-top:3px}
+/* Subtitle bar */
+#subtitleBar{position:fixed;bottom:64px;left:50%;transform:translateX(-50%);width:80%;max-width:700px;background:rgba(0,0,0,.75);border-radius:8px;padding:10px 16px;text-align:center;font-size:14px;color:#e2e8f0;line-height:1.5;z-index:100;display:none;backdrop-filter:blur(6px)}
+
+/* Control bar */
+#controlBar{position:fixed;bottom:0;left:0;right:0;background:rgba(13,17,30,.95);border-top:1px solid rgba(255,255,255,.08);padding:10px 20px;display:flex;align-items:center;justify-content:center;gap:12px;z-index:200;backdrop-filter:blur(8px)}
+#controlBar button{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);color:#e2e8f0;padding:7px 14px;border-radius:8px;cursor:pointer;font-size:12px;font-weight:500;transition:all .2s;display:flex;align-items:center;gap:5px;backdrop-filter:blur(4px)}
+#controlBar button:hover{background:rgba(99,179,237,.15);border-color:rgba(99,179,237,.3)}
+#controlBar button.primary{background:linear-gradient(135deg,#2b6cb0,#4c51bf);border-color:transparent;color:#fff}
+#controlBar button.primary:hover{opacity:.9}
+#controlBar .page-info{font-size:12px;color:#718096;min-width:60px;text-align:center}
+</style>
+</head>
+<body>
+
+<div class="slide-wrap">
+
+<!-- SLIDE 1: Hero -->
+<div class="slide active" data-slide="1">
+  <div style="text-align:center">
+    <div class="s-brand">Amazon Quick Desktop</div>
+    <div class="s-title">💰 资金周报生成<span class="accent">助手</span></div>
+    <div class="s-subtitle">端到端AI技能方案 — AI与资金管理团队协作，每周自动产出专业级周报</div>
+    <div class="stat-row">
+      <div class="stat-box"><div class="sv2">16</div><div class="sl2">分析维度</div></div>
+      <div class="stat-box"><div class="sv2">10</div><div class="sl2">自动化步骤</div></div>
+      <div class="stat-box"><div class="sv2">21+</div><div class="sl2">可视化图表</div></div>
+      <div class="stat-box"><div class="sv2">3</div><div class="sl2">交付件</div></div>
+      <div class="stat-box"><div class="sv2">~15min</div><div class="sl2">原需半天</div></div>
+    </div>
+  </div>
+  <div class="ba-row" style="margin-top:16px">
+    <div class="ba-card ba-before"><div class="ba-title" style="color:#f56565">❌ 以前</div><div class="ba-item">📥 网银逐个导出，手动合并</div><div class="ba-item">🧮 手动分类、画图、排版</div><div class="ba-item">⚠️ 易出错，分析浅（7维度）</div></div>
+    <div class="ba-arrow">→</div>
+    <div class="ba-card ba-after"><div class="ba-title" style="color:#48bb78">✅ 现在</div><div class="ba-item">🤖 AI自动16维度+21图表</div><div class="ba-item">👤 人审核签发，补充判断</div><div class="ba-item">💾 每期自动沉淀环比</div></div>
+  </div>
+  <div style="margin-top:10px;text-align:center">
+    <div style="font-size:12px;color:#718096;margin-bottom:6px">👥 适用角色</div>
+    <div style="display:flex;gap:6px;flex-wrap:wrap;justify-content:center">
+      <span style="font-size:11px;padding:3px 10px;border-radius:4px;background:rgba(66,153,225,.12);color:#63b3ed;border:1px solid rgba(66,153,225,.25)">资金管理部经理</span>
+      <span style="font-size:11px;padding:3px 10px;border-radius:4px;background:rgba(66,153,225,.12);color:#63b3ed;border:1px solid rgba(66,153,225,.25)">财务总监 CFO</span>
+      <span style="font-size:11px;padding:3px 10px;border-radius:4px;background:rgba(66,153,225,.12);color:#63b3ed;border:1px solid rgba(66,153,225,.25)">司库 Treasurer</span>
+      <span style="font-size:11px;padding:3px 10px;border-radius:4px;background:rgba(66,153,225,.12);color:#63b3ed;border:1px solid rgba(66,153,225,.25)">子公司财务主管</span>
+      <span style="font-size:11px;padding:3px 10px;border-radius:4px;background:rgba(139,92,246,.12);color:#b794f4;border:1px solid rgba(139,92,246,.25)">风险管理</span>
+      <span style="font-size:11px;padding:3px 10px;border-radius:4px;background:rgba(237,137,54,.12);color:#f6ad55;border:1px solid rgba(237,137,54,.25)">外汇交易员</span>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 2: Architecture (SVG Diagram) -->
+<div class="slide" data-slide="2">
+  <div class="s-brand">Amazon Quick Desktop</div>
+  <div class="s-title" style="font-size:26px">🏗️ 五层系统架构</div>
+  <div style="margin-top:4px;display:flex;justify-content:center;flex:1;align-items:center">
+    <svg viewBox="0 0 960 440" width="95%" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <filter id="sh"><feDropShadow dx="0" dy="2" stdDeviation="4" flood-opacity="0.15"></feDropShadow></filter>
+        <linearGradient id="gCenter" x1="0%" y1="0%" x2="0%" y2="100%">
+          <stop offset="0%" style="stop-color:#4C9AFF;stop-opacity:0.08"></stop>
+          <stop offset="100%" style="stop-color:#4C9AFF;stop-opacity:0.02"></stop>
+        </linearGradient>
+      </defs>
+      <!-- Left: Triggers -->
+      <text x="95" y="26" font-size="13" font-weight="700" fill="#b794f4" text-anchor="middle">触发方式</text>
+      <rect x="20" y="42" width="150" height="52" rx="10" fill="rgba(255,255,255,0.05)" stroke="rgba(255,255,255,0.15)" stroke-width="1.2" filter="url(#sh)"></rect>
+      <text x="95" y="63" font-size="17" text-anchor="middle">💬</text>
+      <text x="95" y="82" font-size="12" font-weight="600" fill="#e2e8f0" text-anchor="middle">对话触发</text>
+      <rect x="20" y="105" width="150" height="52" rx="10" fill="rgba(255,255,255,0.05)" stroke="rgba(255,255,255,0.15)" stroke-width="1.2" filter="url(#sh)"></rect>
+      <text x="95" y="126" font-size="17" text-anchor="middle">⏰</text>
+      <text x="95" y="145" font-size="12" font-weight="600" fill="#e2e8f0" text-anchor="middle">定时调度</text>
+      <rect x="20" y="168" width="150" height="52" rx="10" fill="rgba(255,255,255,0.05)" stroke="rgba(255,255,255,0.15)" stroke-width="1.2" filter="url(#sh)"></rect>
+      <text x="95" y="189" font-size="17" text-anchor="middle">📎</text>
+      <text x="95" y="208" font-size="12" font-weight="600" fill="#e2e8f0" text-anchor="middle">数据导入</text>
+      <!-- Arrows left -->
+      <line x1="170" y1="68" x2="240" y2="180" stroke="#b794f4" stroke-width="1.5" stroke-dasharray="4,3" opacity=".6"></line>
+      <line x1="170" y1="131" x2="240" y2="180" stroke="#b794f4" stroke-width="1.5" stroke-dasharray="4,3" opacity=".6"></line>
+      <line x1="170" y1="194" x2="240" y2="194" stroke="#b794f4" stroke-width="1.5" stroke-dasharray="4,3" opacity=".6"></line>
+      <!-- Center: Quick Desktop -->
+      <rect x="240" y="20" width="480" height="400" rx="16" fill="url(#gCenter)" stroke="#4C9AFF" stroke-width="1.2" stroke-dasharray="6,3"></rect>
+      <text x="480" y="48" font-size="14" font-weight="800" fill="#63b3ed" text-anchor="middle">Amazon Quick Desktop</text>
+      <!-- Layer 1: Data -->
+      <rect x="268" y="62" width="424" height="55" rx="10" fill="rgba(66,153,225,0.08)" stroke="rgba(66,153,225,0.3)" stroke-width="1"></rect>
+      <text x="288" y="85" font-size="15">📥</text>
+      <text x="312" y="86" font-size="12.5" font-weight="700" fill="#63b3ed">数据接入层</text>
+      <text x="288" y="105" font-size="11" fill="#a0aec0">银行流水 · 理财台账 · 资金计划 · 预警规则 · 上周汇总</text>
+      <!-- Layer 2: Compute -->
+      <rect x="268" y="128" width="424" height="55" rx="10" fill="rgba(237,137,54,0.06)" stroke="rgba(237,137,54,0.3)" stroke-width="1"></rect>
+      <text x="288" y="151" font-size="15">⚙️</text>
+      <text x="312" y="152" font-size="12.5" font-weight="700" fill="#f6ad55">计算引擎层</text>
+      <text x="288" y="171" font-size="11" fill="#a0aec0">核心指标 · 异常检测 · 风险矩阵 · 量化模型(IRP/GK) · AI建议</text>
+      <!-- Layer 3: Render -->
+      <rect x="268" y="194" width="424" height="55" rx="10" fill="rgba(72,187,120,0.06)" stroke="rgba(72,187,120,0.3)" stroke-width="1"></rect>
+      <text x="288" y="217" font-size="15">📊</text>
+      <text x="312" y="218" font-size="12.5" font-weight="700" fill="#48bb78">渲染层（三路并行）</text>
+      <text x="288" y="237" font-size="11" fill="#a0aec0">Markdown 16章 · Highcharts 21+图表(含热力图) · ReportLab PDF</text>
+      <!-- Layer 4: Delivery -->
+      <rect x="268" y="260" width="424" height="55" rx="10" fill="rgba(245,101,101,0.06)" stroke="rgba(245,101,101,0.3)" stroke-width="1"></rect>
+      <text x="288" y="283" font-size="15">📤</text>
+      <text x="312" y="284" font-size="12.5" font-weight="700" fill="#fc8181">交付层</text>
+      <text x="288" y="303" font-size="11" fill="#a0aec0">Session Tab 预览 · Outlook 邮件 · Teams/Slack 推送</text>
+      <!-- Layer 5: Persist -->
+      <rect x="268" y="330" width="424" height="48" rx="8" fill="rgba(139,92,246,0.06)" stroke="rgba(139,92,246,0.25)" stroke-width="1" stroke-dasharray="4,2"></rect>
+      <text x="288" y="360" font-size="14">💾</text>
+      <text x="312" y="361" font-size="12" font-weight="600" fill="#b794f4">持久化层</text>
+      <text x="420" y="361" font-size="11" fill="#718096">Agent Files: 预警规则缓存 · 每期汇总沉淀 · 环比链</text>
+      <!-- Right: Outputs -->
+      <text x="855" y="26" font-size="13" font-weight="700" fill="#48bb78" text-anchor="middle">交付产物</text>
+      <rect x="780" y="62" width="150" height="52" rx="10" fill="rgba(255,255,255,0.05)" stroke="rgba(255,255,255,0.15)" stroke-width="1.2" filter="url(#sh)"></rect>
+      <text x="855" y="83" font-size="17" text-anchor="middle">📝</text>
+      <text x="855" y="102" font-size="12" font-weight="600" fill="#e2e8f0" text-anchor="middle">Markdown 周报</text>
+      <rect x="780" y="128" width="150" height="52" rx="10" fill="rgba(255,255,255,0.05)" stroke="rgba(255,255,255,0.15)" stroke-width="1.2" filter="url(#sh)"></rect>
+      <text x="855" y="149" font-size="17" text-anchor="middle">📊</text>
+      <text x="855" y="168" font-size="12" font-weight="600" fill="#e2e8f0" text-anchor="middle">HTML 仪表盘</text>
+      <rect x="780" y="194" width="150" height="52" rx="10" fill="rgba(255,255,255,0.05)" stroke="rgba(255,255,255,0.15)" stroke-width="1.2" filter="url(#sh)"></rect>
+      <text x="855" y="215" font-size="17" text-anchor="middle">📕</text>
+      <text x="855" y="234" font-size="12" font-weight="600" fill="#e2e8f0" text-anchor="middle">PDF 正式版</text>
+      <rect x="780" y="260" width="150" height="52" rx="10" fill="rgba(255,255,255,0.05)" stroke="rgba(255,255,255,0.15)" stroke-width="1.2" filter="url(#sh)"></rect>
+      <text x="855" y="281" font-size="17" text-anchor="middle">📧</text>
+      <text x="855" y="300" font-size="12" font-weight="600" fill="#e2e8f0" text-anchor="middle">邮件/Teams</text>
+      <!-- Arrows right -->
+      <line x1="692" y1="180" x2="780" y2="88" stroke="#48bb78" stroke-width="1.5" stroke-dasharray="4,3" opacity=".6"></line>
+      <line x1="692" y1="200" x2="780" y2="154" stroke="#48bb78" stroke-width="1.5" stroke-dasharray="4,3" opacity=".6"></line>
+      <line x1="692" y1="220" x2="780" y2="220" stroke="#48bb78" stroke-width="1.5" stroke-dasharray="4,3" opacity=".6"></line>
+      <line x1="692" y1="290" x2="780" y2="286" stroke="#fc8181" stroke-width="1.5" stroke-dasharray="4,3" opacity=".6"></line>
+    </svg>
+  </div>
+</div>
+
+<!-- SLIDE 3: AI + Human -->
+<div class="slide" data-slide="3">
+  <div class="s-brand">Amazon Quick Desktop</div>
+  <div class="s-title" style="font-size:26px">🤝 AI 与人的协作分工</div>
+  <div class="s-subtitle">AI做重复计算和渲染，人做业务判断和签发</div>
+  <table class="s-table">
+    <tbody><tr><th style="width:18%">环节</th><th style="width:41%"><span class="aib">🤖 AI 自动完成</span></th><th style="width:41%"><span class="hb">👤 人审核/决策</span></th></tr>
+    <tr><td>数据准备</td><td>自动读取校验，输出质量报告</td><td>确认数据完整</td></tr>
+    <tr><td>指标计算</td><td>16维度全自动计算</td><td>—（全自动）</td></tr>
+    <tr><td>异常标注</td><td>5类规则逐笔扫描标红</td><td>确认是否业务合理</td></tr>
+    <tr><td>管理建议</td><td>5-8条分级建议</td><td><b>补充业务判断</b></td></tr>
+    <tr><td>报告生成</td><td>三件套同步输出</td><td>审核修订后签发</td></tr>
+    <tr><td>分发</td><td>Outlook/Teams/Slack</td><td>确认收件人</td></tr>
+  </tbody></table>
+  <div style="margin-top:16px;display:flex;gap:12px;justify-content:center;flex-wrap:wrap">
+    <div style="padding:8px 16px;border-radius:8px;background:rgba(66,153,225,.08);border:1px solid rgba(66,153,225,.2);font-size:13px;color:#63b3ed;display:flex;align-items:center;gap:5px"><span style="font-size:16px">🤖</span> AI处理 80%+ 工作量</div>
+    <div style="padding:8px 16px;border-radius:8px;background:rgba(139,92,246,.08);border:1px solid rgba(139,92,246,.2);font-size:13px;color:#b794f4;display:flex;align-items:center;gap:5px"><span style="font-size:16px">👤</span> 人把控 3 个关键节点</div>
+    <div style="padding:8px 16px;border-radius:8px;background:rgba(72,187,120,.08);border:1px solid rgba(72,187,120,.2);font-size:13px;color:#48bb78;display:flex;align-items:center;gap:5px"><span style="font-size:16px">🔒</span> 业务决策权始终留给团队</div>
+  </div>
+</div>
+
+<!-- SLIDE 4: Data Sources -->
+<div class="slide" data-slide="4">
+  <div class="s-brand">Amazon Quick Desktop</div>
+  <div class="s-title" style="font-size:26px">📥 数据输入：5份 Excel</div>
+  <div class="s-grid g5" style="margin-top:16px">
+    <div class="s-card"><div class="icon">🏦</div><div class="name">银行流水明细</div><div class="desc">全集团逐笔交易<br>流水+账户信息</div></div>
+    <div class="s-card"><div class="icon">💰</div><div class="name">理财台账</div><div class="desc">在投组合<br>本周到期明细</div></div>
+    <div class="s-card"><div class="icon">📋</div><div class="name">资金计划表</div><div class="desc">26类收支<br>计划vs实际</div></div>
+    <div class="s-card highlight"><div class="icon">⚠️</div><div class="name">预警规则表</div><div class="desc">⭐首次导入<br>后自动缓存</div></div>
+    <div class="s-card highlight"><div class="icon">📊</div><div class="name">上周汇总</div><div class="desc">⭐每期自动<br>沉淀生成</div></div>
+  </div>
+  <div style="display:flex;gap:8px;justify-content:center;margin-top:16px;flex-wrap:wrap">
+    <span class="conn ready">✅ 数据导入</span>
+    <span class="conn ready">✅ OneDrive 自动获取</span>
+    <span class="conn ready">✅ SharePoint 自动获取</span>
+    <span class="conn mcp">⚙️ ERP（需MCP适配）</span>
+  </div>
+</div>
+
+<!-- SLIDE 5: Pipeline 1-5 -->
+<div class="slide" data-slide="5">
+  <div class="s-brand">Amazon Quick Desktop</div>
+  <div class="s-title" style="font-size:26px">⚙️ 处理流程：步骤 1-5</div>
+  <div style="margin-top:12px">
+    <div class="pipe-step"><div class="pipe-num">1</div><div class="pipe-body"><div class="pipe-name">数据校验 <span class="aib">🤖</span> <span class="hb">👤确认</span></div><div class="pipe-desc">读取5份Excel → 校验结构 → 推断周次 → 预警规则存入Agent Files</div></div></div>
+    <div class="pipe-step"><div class="pipe-num">2</div><div class="pipe-body"><div class="pipe-name">核心指标 <span class="aib">🤖</span></div><div class="pipe-desc">每日余额趋势 · 收付结构(10+类别自动映射) · 环比对比。计划表合计数据校准，避免内部划转双重计算<div><span class="ttag">treasury_pipeline.py</span></div></div></div></div>
+    <div class="pipe-step"><div class="pipe-num">3</div><div class="pipe-body"><div class="pipe-name">异常检测 <span class="aib">🤖</span></div><div class="pipe-desc">5类预警逐笔扫描全部交易：余额低于预警线 / 单笔超限 / 大额摘要缺失 / 异常时间交易 / 连续低余额<div><span class="ttag">detect_anomalies()</span></div></div></div></div>
+    <div class="pipe-step"><div class="pipe-num">4</div><div class="pipe-body"><div class="pipe-name">风险矩阵 <span class="aib">🤖</span></div><div class="pipe-desc">子公司×日期百分位热力图(15×5) + 支付时段热力图(10h×5d) + 综合风险评分(3维加权)<div><span class="ttag">compute_risk_matrix()</span></div></div></div></div>
+    <div class="pipe-step"><div class="pipe-num">5</div><div class="pipe-body"><div class="pipe-name">扩展8维度 <span class="aib">🤖</span></div><div class="pipe-desc">账龄 · 外汇(含IRP远期+GK期权定价) · 授信 · 资金池 · 滚动预测 · 利差 · 合规 · 套保<div><span class="ttag">gk_option()</span><span class="ttag">forward_rate()</span></div></div></div></div>
+  </div>
+</div>
+
+<!-- SLIDE 6: Pipeline 6-10 -->
+<div class="slide" data-slide="6">
+  <div class="s-brand">Amazon Quick Desktop</div>
+  <div class="s-title" style="font-size:26px">⚙️ 处理流程：步骤 6-10</div>
+  <div style="margin-top:12px">
+    <div class="pipe-step"><div class="pipe-num">6</div><div class="pipe-body"><div class="pipe-name">管理建议 <span class="aib">🤖</span> <span class="hb">👤审核</span></div><div class="pipe-desc">5-8条分级建议 🔴紧急 🟡关注 🟢优化 → 人补充业务判断</div></div></div>
+    <div class="pipe-step"><div class="pipe-num">7</div><div class="pipe-body"><div class="pipe-name">Markdown 周报 <span class="aib">🤖</span></div><div class="pipe-desc">16章完整版 → Session Tab 在线协作编辑</div></div></div>
+    <div class="pipe-step"><div class="pipe-num">8</div><div class="pipe-body"><div class="pipe-name">HTML 仪表盘 <span class="aib">🤖</span></div><div class="pipe-desc">7标签页 · 21+图表(Highcharts 12.1) · 含双热力图 · 深浅色主题自适应<div><span class="ttag">Highcharts</span><span class="ttag">heatmap</span></div></div></div></div>
+    <div class="pipe-step"><div class="pipe-num">9</div><div class="pipe-body"><div class="pipe-name">PDF 正式版 <span class="aib">🤖</span> <span class="hb">👤签发</span></div><div class="pipe-desc">8-12页打印级 · 8张matplotlib图表 · 中文字体(STSong-Light) · 页眉页脚+密级标识<div><span class="ttag">ReportLab</span><span class="ttag">matplotlib</span></div></div></div></div>
+    <div class="pipe-step"><div class="pipe-num">10</div><div class="pipe-body"><div class="pipe-name">沉淀 &amp; 分发 <span class="aib">🤖</span></div><div class="pipe-desc">本周汇总存入Agent Files(供下期环比) · Outlook邮件发送PDF+摘要 · Teams/Slack推送预警摘要<div><span class="ttag">Agent Files</span><span class="ttag">Outlook</span></div></div></div></div>
+  </div>
+</div>
+
+<!-- SLIDE 7: 16 Dimensions -->
+<div class="slide" data-slide="7">
+  <div class="s-brand">Amazon Quick Desktop</div>
+  <div class="s-title" style="font-size:26px">📐 16维度分析矩阵</div>
+  <div class="s-subtitle" style="margin-bottom:10px"><span style="color:#4299e1">🔵 核心7维度</span> + <span style="color:#f56565">🔴 风险2维度</span> + <span style="color:#805ad5">🟣 扩展7维度</span></div>
+  <div class="s-grid g4" style="gap:5px">
+    <div class="dim c"><div class="di">📈</div><div><div class="dn">① 余额趋势</div><div class="dd">每日余额+高/低</div></div></div>
+    <div class="dim c"><div class="di">🥧</div><div><div class="dn">② 收入结构</div><div class="dd">10+类别</div></div></div>
+    <div class="dim c"><div class="di">💸</div><div><div class="dn">③ 支出结构</div><div class="dd">原料/费用</div></div></div>
+    <div class="dim c"><div class="di">⚠️</div><div><div class="dn">④ 异常检测</div><div class="dd">5类规则</div></div></div>
+    <div class="dim c"><div class="di">💰</div><div><div class="dn">⑤ 理财动态</div><div class="dd">到期/续作</div></div></div>
+    <div class="dim c"><div class="di">📊</div><div><div class="dn">⑥ 计划执行</div><div class="dd">偏差&gt;15%</div></div></div>
+    <div class="dim c"><div class="di">📉</div><div><div class="dn">⑦ 环比对比</div><div class="dd">7项KPI</div></div></div>
+    <div class="dim r"><div class="di">🔥</div><div><div class="dn">⑧ 子公司热力图</div><div class="dd">15×5</div></div></div>
+    <div class="dim r"><div class="di">⏰</div><div><div class="dn">⑨ 时段热力图</div><div class="dd">10h×5d</div></div></div>
+    <div class="dim e"><div class="di">📋</div><div><div class="dn">⑩ 应收应付</div><div class="dd">5段账龄</div></div></div>
+    <div class="dim e"><div class="di">💱</div><div><div class="dn">⑪ 外汇敞口</div><div class="dd">GK定价</div></div></div>
+    <div class="dim e"><div class="di">🏦</div><div><div class="dn">⑫ 银行授信</div><div class="dd">额度/到期</div></div></div>
+    <div class="dim e"><div class="di">🔄</div><div><div class="dn">⑬ 资金池</div><div class="dd">归集率</div></div></div>
+    <div class="dim e"><div class="di">🔮</div><div><div class="dn">⑭ 滚动预测</div><div class="dd">W+1~4</div></div></div>
+    <div class="dim e"><div class="di">📐</div><div><div class="dn">⑮ 融资利差</div><div class="dd">成本vs收益</div></div></div>
+    <div class="dim e"><div class="di">🛡️</div><div><div class="dn">⑯ 套保合规</div><div class="dd">持仓/内控</div></div></div>
+  </div>
+</div>
+
+<!-- SLIDE 8: Outputs -->
+<div class="slide" data-slide="8">
+  <div class="s-brand">Amazon Quick Desktop</div>
+  <div class="s-title" style="font-size:26px">📦 交付产物：三件套 + 数据沉淀</div>
+  <div class="s-grid g4" style="margin-top:14px">
+    <div class="s-card" style="text-align:center"><div class="icon" style="font-size:32px">📝</div><div class="name">Markdown 周报</div><div class="desc">16章完整版<br>Session Tab 协作编辑<br><span style="color:#63b3ed;font-size:10px">含数据表格+异常标注</span></div></div>
+    <div class="s-card" style="text-align:center"><div class="icon" style="font-size:32px">📊</div><div class="name">HTML 仪表盘</div><div class="desc">7标签 · 21+图表<br>含双热力图<br><span style="color:#63b3ed;font-size:10px">Highcharts 交互式</span></div></div>
+    <div class="s-card" style="text-align:center"><div class="icon" style="font-size:32px">📕</div><div class="name">PDF 正式版</div><div class="desc">8-12页 · 打印级<br>含图表 · 密级标识<br><span style="color:#63b3ed;font-size:10px">ReportLab + matplotlib</span></div></div>
+    <div class="s-card" style="text-align:center"><div class="icon" style="font-size:32px">💾</div><div class="name">数据沉淀</div><div class="desc">Agent Files 存档<br>自动环比链<br><span style="color:#63b3ed;font-size:10px">供下期自动对比</span></div></div>
+  </div>
+</div>
+
+<!-- SLIDE 9: Demo Showcase (NEW) -->
+<div class="slide" data-slide="9">
+  <div class="s-brand">Amazon Quick Desktop</div>
+  <div class="s-title" style="font-size:26px">🖼️ 产出效果展示</div>
+  <div class="s-subtitle">基于示例集团 W24 模拟数据（约 5 万笔交易）生成</div>
+  <div class="s-grid g2" style="gap:12px">
+    <div>
+      <div class="demo-item"><div class="demo-icon">📊</div><div><div class="demo-title">HTML 交互仪表盘 · 7标签页</div><div class="demo-desc">📈 资金概况（余额趋势+收支柱图）<br>🔥 风险热力图（15×5子公司矩阵）<br>⏰ 支付时段热力图（10h×5d）<br>💰 理财组合配置与收益率分布</div></div></div>
+      <div class="demo-item"><div class="demo-icon">📕</div><div><div class="demo-title">PDF 正式版 · 8-12页</div><div class="demo-desc">封面KPI速览 · 8张图表 · 异常预警表<br>页眉集团名称+密级 · 页脚页码<br>管理建议 🔴🟡🟢 分级</div></div></div>
+    </div>
+    <div>
+      <div class="demo-item"><div class="demo-icon">📝</div><div><div class="demo-title">Markdown · 16章完整版</div><div class="demo-desc">一~七 核心分析 + 八~十五 扩展维度<br>十六 综合管理建议（8条分级）<br>Session Tab 在线协作编辑</div></div></div>
+      <div style="background:rgba(99,179,237,.06);border:1px solid rgba(99,179,237,.15);border-radius:10px;padding:14px;margin-top:6px">
+        <div style="font-size:13px;font-weight:700;color:#63b3ed;margin-bottom:6px">🔥 风险热力图说明</div>
+        <div style="font-size:11.5px;color:#a0aec0;line-height:1.6">行=15家子公司 · 列=5个工作日<br>每格为<b style="color:#e2e8f0">支付压力百分位排名</b>(0-100)<br>数值越高颜色越红 → 辽东油脂周二至周五连续100（最高风险）</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 10: Features -->
+<div class="slide" data-slide="10">
+  <div class="s-brand">Amazon Quick Desktop</div>
+  <div class="s-title" style="font-size:26px">🚀 六大核心能力</div>
+  <div class="s-grid g3" style="margin-top:20px">
+    <div class="s-card"><div class="icon">💬</div><div class="name">一句话启动</div><div class="desc">Quick Desktop 对话框直接触发，说"生成资金周报"即可</div></div>
+    <div class="s-card"><div class="icon">⏰</div><div class="name">定时自动化</div><div class="desc">Schedule 每周一自动执行，OneDrive获取→生成→邮件分发</div></div>
+    <div class="s-card"><div class="icon">💾</div><div class="name">持久记忆</div><div class="desc">Agent Files：预警规则缓存 + 每期汇总沉淀</div></div>
+    <div class="s-card"><div class="icon">🔥</div><div class="name">风险热力图</div><div class="desc">子公司×日期 + 时段×日期 双维度风险可视化</div></div>
+    <div class="s-card"><div class="icon">📐</div><div class="name">量化定价</div><div class="desc">远期(IRP) + 期权(GK) + Collar零成本策略</div></div>
+    <div class="s-card"><div class="icon">🤝</div><div class="name">人机协作</div><div class="desc">AI执行 + 人审核签发，关键决策留给专业团队</div></div>
+  </div>
+</div>
+
+<!-- SLIDE 11: Implementation (NEW) -->
+<div class="slide" data-slide="11">
+  <div class="s-brand">Amazon Quick Desktop</div>
+  <div class="s-title" style="font-size:26px">🛤️ 实施路径：三阶段上线</div>
+  <div class="s-subtitle">从1天快速验证到持续深化</div>
+  <div class="s-grid g3" style="gap:14px">
+    <div class="phase-card p1">
+      <div class="ph-title">🚀 阶段一：快速启动</div>
+      <div class="ph-time" style="color:#63b3ed">1-2天</div>
+      <ul class="ph-list">
+        <li>准备5份Excel样本数据</li>
+        <li>在Quick Desktop中触发生成首份周报</li>
+        <li>团队试用评估</li>
+        <li>调整预警阈值和分类规则</li>
+      </ul>
+    </div>
+    <div class="phase-card p2">
+      <div class="ph-title">⚙️ 阶段二：流程固化</div>
+      <div class="ph-time" style="color:#48bb78">1-2周</div>
+      <ul class="ph-list">
+        <li>配置OneDrive自动获取数据</li>
+        <li>设置每周一定时调度</li>
+        <li>确定收件人列表和分发规则</li>
+        <li>建立人机协作审批流程</li>
+      </ul>
+    </div>
+    <div class="phase-card p3">
+      <div class="ph-title">📈 阶段三：持续深化</div>
+      <div class="ph-time" style="color:#ed8936">持续迭代</div>
+      <ul class="ph-list">
+        <li>接入ERP/银行系统（MCP适配）</li>
+        <li>启用外汇定价、套保监控</li>
+        <li>定制行业预警规则</li>
+        <li>扩展到月报/季报/专题分析</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 12: Value / ROI (NEW) -->
+<div class="slide" data-slide="12">
+  <div class="s-brand">Amazon Quick Desktop</div>
+  <div class="s-title" style="font-size:26px">📈 价值量化</div>
+  <div class="s-subtitle">效率 · 深度 · 质量三维提升</div>
+  <div class="s-grid g3" style="gap:14px;margin-top:8px">
+    <div class="val-card">
+      <div class="val-num" style="color:#63b3ed">93%</div>
+      <div class="val-label">时间节省率</div>
+      <div class="val-detail">半天(4h+) → 15分钟<br>每周节省 <b style="color:#e2e8f0">4小时+</b><br>年节省 <b style="color:#e2e8f0">200小时+</b></div>
+    </div>
+    <div class="val-card">
+      <div class="val-num" style="color:#805ad5">16</div>
+      <div class="val-label">分析维度</div>
+      <div class="val-detail">传统7维度 → 16维度<br>新增风险热力图、外汇定价<br>滚动预测、套保监控</div>
+    </div>
+    <div class="val-card">
+      <div class="val-num" style="color:#48bb78">5类</div>
+      <div class="val-label">预警规则</div>
+      <div class="val-detail">逐笔扫描49,925条交易<br>口径统一、数据可溯源<br>零遗漏异常检测</div>
+    </div>
+  </div>
+  <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-top:16px">
+    <div style="background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.08);border-radius:8px;padding:12px;text-align:center">
+      <div style="font-size:20px;font-weight:800;color:#f6ad55;font-family:monospace">21+</div>
+      <div style="font-size:11px;color:#a0aec0">可视化图表</div>
+    </div>
+    <div style="background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.08);border-radius:8px;padding:12px;text-align:center">
+      <div style="font-size:20px;font-weight:800;color:#f6ad55;font-family:monospace">3</div>
+      <div style="font-size:11px;color:#a0aec0">件套同步交付</div>
+    </div>
+    <div style="background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.08);border-radius:8px;padding:12px;text-align:center">
+      <div style="font-size:20px;font-weight:800;color:#f6ad55;font-family:monospace">100%</div>
+      <div style="font-size:11px;color:#a0aec0">自动环比链</div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 13: Connectors + Summary -->
+<div class="slide" data-slide="13">
+  <div class="s-brand">Amazon Quick Desktop</div>
+  <div class="s-title" style="font-size:26px">🔌 连接器 &amp; 总结</div>
+  <div class="s-subtitle">7个开箱即用 + MCP扩展</div>
+  <div style="display:flex;gap:7px;flex-wrap:wrap;justify-content:center;margin-bottom:16px">
+    <span class="conn ready"><i class="fa-solid fa-envelope"></i> Outlook 邮件</span>
+    <span class="conn ready"><i class="fa-solid fa-calendar"></i> Outlook 日历</span>
+    <span class="conn ready"><i class="fa-brands fa-microsoft"></i> Teams</span>
+    <span class="conn ready"><i class="fa-brands fa-slack"></i> Slack</span>
+    <span class="conn ready"><i class="fa-solid fa-cloud"></i> OneDrive</span>
+    <span class="conn ready"><i class="fa-solid fa-server"></i> SharePoint</span>
+    <span class="conn ready"><i class="fa-solid fa-video"></i> Zoom</span>
+    <span class="conn mcp"><i class="fa-solid fa-plug"></i> ERP（MCP适配）</span>
+    <span class="conn mcp"><i class="fa-solid fa-plug"></i> 银行直连（MCP适配）</span>
+  </div>
+  <div style="text-align:center;background:linear-gradient(135deg,rgba(99,179,237,.08),rgba(139,92,246,.06));border:1px solid rgba(99,179,237,.2);border-radius:16px;padding:28px 32px">
+    <div style="font-size:22px;font-weight:800;color:#fff;margin-bottom:10px;text-shadow:0 0 20px rgba(99,179,237,.3)">从半天手工 → 15分钟AI助手</div>
+    <div style="font-size:15px;color:#a0aec0;line-height:1.7">16维度 · 21+图表 · 三件套交付 · AI执行+人审核</div>
+    <div style="margin-top:16px;display:flex;gap:20px;justify-content:center">
+      <div style="text-align:center"><div style="font-size:28px;font-weight:800;color:#63b3ed;font-family:monospace">93%</div><div style="font-size:11px;color:#718096">时间节省</div></div>
+      <div style="text-align:center"><div style="font-size:28px;font-weight:800;color:#b794f4;font-family:monospace">16</div><div style="font-size:11px;color:#718096">分析维度</div></div>
+      <div style="text-align:center"><div style="font-size:28px;font-weight:800;color:#48bb78;font-family:monospace">21+</div><div style="font-size:11px;color:#718096">图表</div></div>
+    </div>
+    <div style="margin-top:14px;font-size:13px;color:#718096">感谢关注，欢迎交流 🙏</div>
+  </div>
+</div>
+
+</div><!-- end slide-wrap -->
+
+<!-- Subtitle Bar -->
+<div id="subtitleBar"></div>
+
+<!-- Control Bar -->
+<div id="progressTrack" style="position:fixed;bottom:48px;left:0;right:0;height:2px;background:rgba(255,255,255,.06);z-index:201"><div id="progressBar" style="height:100%;width:0;background:linear-gradient(90deg,#63b3ed,#b794f4);transition:width .4s ease;border-radius:1px"></div></div>
+<div id="controlBar">
+  <button onclick="prevSlide()"><i class="fa-solid fa-chevron-left"></i> 上一页</button>
+  <button class="primary" id="btnNarrate" onclick="toggleNarrate()"><i class="fa-solid fa-play"></i> <span>开始讲解</span></button>
+  <button onclick="nextSlide()">下一页 <i class="fa-solid fa-chevron-right"></i></button>
+  <div class="page-info" id="pageInfo">1 / 13</div>
+  <button onclick="toggleFullscreen()"><i class="fa-solid fa-expand"></i></button>
+</div>
+
+<script>
+const TOTAL = 13;
+
+const narrations = [
+  "欢迎了解Amazon Quick Desktop资金周报生成助手。这是一个端到端的AI技能方案，专为企业集团资金管理部门设计。过去编制一份资金周报需要半天到一天。现在借助AI能力，只需准备5份数据，一句话触发，15分钟内即可自动生成包含16个分析维度、21张可视化图表的专业级周报。",
+  "整个方案基于五层架构设计。最上面是触发层，支持对话触发、定时调度和数据导入三种方式。第二层是数据接入层，对接5份核心数据源，OneDrive和SharePoint可直接自动获取。第三层是计算引擎层，在Python沙箱中运行五大计算引擎。第四层是渲染层，三路并行输出Markdown、交互仪表盘和PDF。最后是交付层和持久化层，通过Session Tab预览、邮件和Teams分发，数据自动沉淀供下期环比。",
+  "这个方案的核心理念是AI做重复计算和渲染，人做业务判断和签发。指标计算和异常检测全部由AI自动完成。管理建议由AI生成5到8条分级建议，但催收决策、调拨安排等业务判断由人补充。报告生成后人审核签发，最后AI自动分发。",
+  "方案需要5份Excel作为输入。银行流水明细，包含全集团逐笔交易。理财台账，记录在投组合和到期产品。资金计划表，对比26类收支的计划和实际。预警规则表，首次导入后自动缓存到Agent Files，后续免重复提供。上周汇总，每期运行后自动沉淀生成。",
+  "前5个步骤：第1步数据校验，AI自动读取校验并推断周次。第2步核心指标计算，包括余额趋势、收付结构和环比。第3步异常检测，按5类规则逐笔扫描全部交易。第4步风险矩阵，生成子公司和时段的双热力图。第5步扩展8个分析维度，包括外汇定价、授信监控、滚动预测等。",
+  "后5个步骤：第6步管理建议，AI生成分级建议，人审核补充业务判断。第7步生成16章Markdown周报。第8步生成包含21张图表和双热力图的HTML交互仪表盘。第9步生成8到12页的PDF正式版，含图表和密级标识，人审核签发后分发。第10步数据沉淀和分发，本周汇总自动存入Agent Files，通过邮件和Teams分发。",
+  "周报覆盖16个分析维度，分为三个层级。核心7个维度用蓝色标注，从交易数据直接提取。风险2个维度用红色标注，通过热力图可视化呈现。扩展7个维度用紫色标注，包括外汇、授信、套保等，接入更多数据源后可逐步深化。",
+  "每次运行产出四个文件。Markdown周报，16章完整版，可在线协作编辑。HTML交互仪表盘，7个标签页、21张图表。PDF正式版，8到12页的打印级报告。以及数据沉淀文件，自动存入Agent Files形成环比链。",
+  "下面展示产出效果。HTML交互仪表盘支持7个标签页切换，包含每日余额趋势、收支结构饼图、计划执行率柱图、子公司风险热力图和支付时段热力图等21张图表。PDF正式版包含8张图表，页眉标注集团名称和密级，页脚显示页码。风险热力图以颜色深浅直观展示15家子公司在5个工作日的流动性压力百分位排名。所有数据均从约5万笔模拟交易中实时计算得出。",
+  "方案具备六大核心能力。一句话启动，对话框直接触发。定时自动化，每周一自动执行。Agent Files持久记忆。风险热力图双维度可视化。量化定价，内置远期和期权定价模型。人机协作，AI执行加人审核，关键决策留给专业团队。",
+  "实施路径分为三个阶段。第一阶段快速启动，仅需1到2天，准备5份Excel样本数据，在Quick Desktop中触发生成首份周报，团队试用评估。第二阶段流程固化，1到2周内配置OneDrive自动获取，设置每周一定时调度，确定收件人列表和分发规则。第三阶段持续深化，逐步接入ERP和银行系统通过MCP适配，启用外汇定价和套保监控等扩展维度，根据业务需求定制预警阈值。",
+  "在价值量化方面，效率提升从半天压缩到15分钟，节省率93%，每周节省4小时以上，年节省200小时以上。分析深度从传统7维度扩展到16维度，新增风险热力图、外汇定价、滚动预测和套保监控。质量保障方面，5类预警规则逐笔扫描近5万条交易，口径统一、数据可溯源，实现零遗漏异常检测。",
+  "在连接器方面，Quick Desktop提供7个开箱即用的连接器：Outlook邮件、Outlook日历、Teams、Slack、OneDrive、SharePoint和Zoom。ERP系统、银行直连可通过MCP开放协议进行适配开发。总结一下，资金周报生成助手将半天手工劳动压缩到15分钟，16维度21张图表三件套交付，AI执行加人审核，确保效率与专业性兼得。感谢您的关注，欢迎交流。"
+];
+
+let currentSlide = 0;
+let isNarrating = false;
+
+function showSlide(n) {
+  const slides = document.querySelectorAll('.slide');
+  const prev = currentSlide;
+  slides.forEach(s => s.classList.remove('active'));
+  currentSlide = Math.max(0, Math.min(n, slides.length - 1));
+  slides[currentSlide].classList.add('active');
+  document.getElementById('pageInfo').textContent = (currentSlide+1) + ' / ' + TOTAL;
+  // Update progress bar
+  const pct = ((currentSlide) / (TOTAL - 1)) * 100;
+  document.getElementById('progressBar').style.width = pct + '%';
+}
+
+function nextSlide() { showSlide(currentSlide + 1); if(isNarrating) narrateCurrentSlide(); }
+function prevSlide() { showSlide(currentSlide - 1); if(isNarrating) narrateCurrentSlide(); }
+
+function splitSentences(text) {
+  return text.split(/(?<=[。；！？])/g).filter(s => s.trim());
+}
+
+function narrateCurrentSlide() {
+  window.speechSynthesis.cancel();
+  const text = narrations[currentSlide];
+  if (!text) return;
+  const sentences = splitSentences(text);
+  let idx = 0;
+  const subBar = document.getElementById('subtitleBar');
+  subBar.style.display = 'block';
+
+  function speakNext() {
+    if (idx >= sentences.length || !isNarrating) {
+      if (isNarrating && currentSlide < narrations.length - 1) {
+        setTimeout(() => { nextSlide(); }, 600);
+      } else if (isNarrating && currentSlide === narrations.length - 1) {
+        stopNarrate();
+      }
+      return;
+    }
+    const utt = new SpeechSynthesisUtterance(sentences[idx]);
+    utt.lang = 'zh-CN';
+    utt.rate = 1.0;
+    const voices = window.speechSynthesis.getVoices();
+    const edgeVoice = voices.find(v => v.name.includes('Xiaoxiao'))
+      || voices.find(v => v.name.includes('Microsoft') && v.lang.startsWith('zh'))
+      || voices.find(v => v.lang.startsWith('zh-CN'));
+    if (edgeVoice) utt.voice = edgeVoice;
+    subBar.textContent = sentences[idx];
+    utt.onend = function() { idx++; speakNext(); };
+    window.speechSynthesis.speak(utt);
+  }
+  speakNext();
+}
+
+function toggleNarrate() {
+  if (isNarrating) { stopNarrate(); } else { startNarrate(); }
+}
+
+function startNarrate() {
+  isNarrating = true;
+  const btn = document.getElementById('btnNarrate');
+  btn.innerHTML = '<i class="fa-solid fa-stop"></i> <span>停止讲解</span>';
+  narrateCurrentSlide();
+}
+
+function stopNarrate() {
+  isNarrating = false;
+  window.speechSynthesis.cancel();
+  const btn = document.getElementById('btnNarrate');
+  btn.innerHTML = '<i class="fa-solid fa-play"></i> <span>开始讲解</span>';
+  document.getElementById('subtitleBar').style.display = 'none';
+}
+
+function toggleFullscreen() {
+  if (!document.fullscreenElement) {
+    document.documentElement.requestFullscreen();
+  } else {
+    document.exitFullscreen();
+  }
+}
+
+// Keyboard navigation
+document.addEventListener('keydown', e => {
+  if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); nextSlide(); }
+  if (e.key === 'ArrowLeft') { e.preventDefault(); prevSlide(); }
+  if (e.key === 'Escape') stopNarrate();
+  if (e.key === 'f' || e.key === 'F') toggleFullscreen();
+});
+
+// Pre-load Edge TTS voices
+window.speechSynthesis.onvoiceschanged = function() {
+  const voices = window.speechSynthesis.getVoices();
+  const edge = voices.find(v => v.name.includes('Xiaoxiao'));
+  if (edge) console.log('Edge TTS voice ready:', edge.name);
+};
+window.speechSynthesis.getVoices();
+
+showSlide(0);
+</script>
+
+</body></html>
